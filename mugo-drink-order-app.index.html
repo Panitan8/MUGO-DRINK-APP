@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MUGO DRINK — Pre-Order</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0C0A09;--bg2:#1C1917;--bg3:#292524;
+--gold:#C8A97E;--gold-light:#E8D5B5;--gold-dim:#8B7355;
+--cream:#FAF7F2;--white:#FAFAF9;--muted:#A8A29E;
+--card:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.06);
+}
+html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--white);-webkit-font-smoothing:antialiased}
+.app{max-width:430px;margin:0 auto;background:var(--bg);min-height:100vh;position:relative;overflow-x:hidden}
+.top-bar{padding:14px 20px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;background:var(--bg)}
+.logo-area{display:flex;align-items:center;gap:10px}
+.logo-box{width:38px;height:38px;border-radius:8px;background:var(--white);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:8px;color:var(--bg);line-height:1.1;text-align:center;letter-spacing:-0.3px}
+.brand{display:flex;flex-direction:column}
+.brand-name{font-size:18px;font-weight:600;color:var(--cream);letter-spacing:2px}
+.brand-sub{font-size:9px;color:var(--gold-dim);letter-spacing:1.5px;margin-top:1px}
+.cart-icon{position:relative;cursor:pointer;background:none;border:none;color:var(--gold);padding:8px}
+.cart-icon svg{width:22px;height:22px}
+.cart-badge{position:absolute;top:2px;right:2px;background:var(--gold);color:var(--bg);font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center}
+.hero{margin:0 16px 14px;padding:22px 20px;border-radius:14px;background:linear-gradient(135deg,#1C1917,#292524,#1C1917);border:0.5px solid var(--card-border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,126,0.06),transparent 70%)}
+.hero-greet{font-size:12px;color:var(--muted);margin-bottom:3px}
+.hero-title{font-size:20px;font-weight:300;color:var(--cream);line-height:1.35}
+.hero-title em{font-style:normal;color:var(--gold);font-weight:400}
+.hero-tag{font-size:11px;color:var(--gold-dim);margin-top:8px;letter-spacing:0.5px}
+.search-bar{margin:0 16px 12px;position:relative}
+.search-bar input{width:100%;padding:10px 14px 10px 36px;border-radius:10px;border:0.5px solid var(--card-border);background:var(--card);color:var(--cream);font-size:13px;outline:none}
+.search-bar input::placeholder{color:#78716C}
+.search-bar svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:#78716C}
+.cat-scroll{display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.cat-scroll::-webkit-scrollbar{display:none}
+.cat-pill{padding:7px 14px;border-radius:20px;border:0.5px solid var(--card-border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;white-space:nowrap;transition:all 0.25s;letter-spacing:0.3px}
+.cat-pill.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.menu-list{padding:0 16px 100px}
+.cat-title{font-size:10px;letter-spacing:2.5px;color:var(--gold-dim);text-transform:uppercase;padding:12px 0 8px;border-bottom:0.5px solid var(--card-border);margin-bottom:8px}
+.menu-card{display:flex;align-items:center;gap:12px;padding:8px 12px;margin-bottom:6px;border-radius:12px;background:var(--card);border:0.5px solid var(--card-border);cursor:pointer;transition:all 0.2s}
+.menu-card:active{transform:scale(0.98);background:rgba(255,255,255,0.06)}
+.menu-thumb{width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;position:relative;overflow:hidden}
+.menu-thumb::after{content:'';position:absolute;inset:0;border-radius:10px;border:0.5px solid rgba(255,255,255,0.08)}
+.menu-card-info{flex:1;min-width:0}
+.menu-card-name{font-size:13px;color:var(--cream);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.menu-card-name-th{font-size:10px;color:#78716C;margin-top:1px}
+.menu-card-right{text-align:right;flex-shrink:0}
+.menu-card-price{font-size:14px;color:var(--gold);font-weight:400}
+.menu-add{width:28px;height:28px;border-radius:50%;border:0.5px solid var(--gold-dim);background:transparent;color:var(--gold);font-size:15px;cursor:pointer;margin-top:4px;transition:all 0.15s;display:flex;align-items:center;justify-content:center}
+.menu-add:active{background:var(--gold);color:var(--bg);transform:scale(0.9)}
+.screen{display:none}.screen.active{display:block}
+.cart-top{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:0.5px solid var(--card-border);position:sticky;top:0;background:var(--bg);z-index:5}
+.back-arrow{background:none;border:none;color:var(--gold);cursor:pointer;font-size:18px;padding:4px}
+.cart-top h2{font-size:14px;font-weight:400;letter-spacing:1px;color:var(--cream)}
+.cart-items{padding:12px 16px}
+.ci{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--card-border)}
+.ci-em{font-size:22px;width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-info{flex:1}.ci-name{font-size:13px;color:var(--cream)}.ci-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.ci-qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.ci-qty button{width:24px;height:24px;border-radius:50%;border:0.5px solid var(--card-border);background:var(--card);color:var(--cream);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center}
+.ci-qty button:active{background:var(--gold);color:var(--bg)}
+.ci-qty span{font-size:12px;color:var(--cream);min-width:12px;text-align:center}
+.ci-price{font-size:13px;color:var(--gold)}
+.divider{height:6px;background:rgba(0,0,0,0.3);margin:6px 0}
+.sec-head{padding:14px 20px 8px;font-size:9px;letter-spacing:2.5px;color:var(--gold-dim);text-transform:uppercase}
+.time-grid{display:flex;gap:6px;padding:0 16px;flex-wrap:wrap}
+.time-chip{padding:8px 14px;border-radius:8px;border:0.5px solid var(--card-border);background:var(--card);color:var(--muted);font-size:11px;cursor:pointer;transition:all 0.2s}
+.time-chip.active{border-color:var(--gold);color:var(--gold);background:rgba(200,169,126,0.08)}
+.pay-list{padding:0 16px}
+.pay-card{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:6px;border-radius:10px;border:0.5px solid var(--card-border);background:var(--card);cursor:pointer;transition:all 0.2s}
+.pay-card.active{border-color:var(--gold);background:rgba(200,169,126,0.06)}
+.pay-dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pay-card.active .pay-dot{border-color:var(--gold);background:var(--gold)}
+.pay-card.active .pay-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--bg)}
+.pay-badge{width:36px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+.pay-info{flex:1}.pay-name{font-size:12px;color:var(--cream)}.pay-desc{font-size:9px;color:var(--muted);margin-top:1px}
+.summary-box{margin:12px 16px;padding:14px;border-radius:10px;background:var(--card);border:0.5px solid var(--card-border)}
+.s-row{display:flex;justify-content:space-between;padding:2px 0;font-size:11px;color:var(--muted)}
+.s-row.total{color:var(--cream);font-size:14px;padding-top:8px;margin-top:4px;border-top:0.5px solid var(--card-border)}
+.s-row.total span:last-child{color:var(--gold);font-weight:500;font-size:16px}
+.order-btn{display:block;width:calc(100% - 32px);margin:12px 16px 24px;padding:14px;border-radius:12px;background:linear-gradient(135deg,#C8A97E,#A8895E);color:var(--bg);font-size:13px;font-weight:600;letter-spacing:1px;border:none;cursor:pointer;text-transform:uppercase}
+.order-btn:active{transform:scale(0.98);opacity:0.9}
+.done-wrap{text-align:center;padding:50px 20px}
+.done-check{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:fadeUp 0.5s ease}
+.done-check svg{width:28px;height:28px;color:var(--gold)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.done-title{font-size:18px;font-weight:300;color:var(--cream);letter-spacing:1px;margin-bottom:6px}
+.done-sub{font-size:12px;color:var(--muted);line-height:1.6}
+.done-num{display:inline-block;margin-top:16px;padding:8px 24px;border:0.5px solid var(--gold-dim);border-radius:8px;font-size:18px;letter-spacing:3px;color:var(--gold);font-weight:300}
+.done-line{width:30px;height:0.5px;background:var(--card-border);margin:20px auto}
+.again-btn{padding:10px 28px;border-radius:10px;border:0.5px solid var(--gold-dim);background:transparent;color:var(--gold);font-size:11px;letter-spacing:2px;cursor:pointer;text-transform:uppercase}
+.again-btn:active{background:var(--gold);color:var(--bg)}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);font-size:13px}
+.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(50px);background:var(--gold);color:var(--bg);padding:8px 20px;border-radius:20px;font-size:11px;font-weight:600;opacity:0;transition:all 0.3s;pointer-events:none;z-index:99;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.topping-section{padding:0 16px;margin-top:4px}
+.topping-card{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;border-radius:10px;border:0.5px solid var(--card-border);background:var(--card);cursor:pointer}
+.topping-card.selected{border-color:var(--gold);background:rgba(200,169,126,0.06)}
+.topping-check{width:16px;height:16px;border-radius:4px;border:1px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--bg);transition:all 0.2s}
+.topping-card.selected .topping-check{background:var(--gold);border-color:var(--gold)}
+.topping-name{flex:1;font-size:12px;color:var(--cream)}
+.topping-price{font-size:12px;color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<div class="top-bar">
+  <div class="logo-area">
+    <div class="logo-box">MUGO<br>DRINK</div>
+    <div class="brand"><span class="brand-name">MUGO DRINK</span><span class="brand-sub">Cocoa &amp; Coffee &amp; Milk Tea &bull; Since 2020</span></div>
+  </div>
+  <button class="cart-icon" onclick="showCart()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    <span class="cart-badge" id="badge">0</span>
+  </button>
+</div>
+<div class="screen active" id="scrMenu">
+  <div class="hero">
+    <div class="hero-greet" id="greet">Good morning</div>
+    <div class="hero-title">Crafted with love,<br>served with <em>passion</em></div>
+    <div class="hero-tag">Since 2020 &bull; Order ahead &bull; Skip the queue</div>
+  </div>
+  <div class="search-bar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" placeholder="ค้นหาเมนู..." id="searchInput" oninput="onSearch()">
+  </div>
+  <div class="cat-scroll" id="cats"></div>
+  <div class="menu-list" id="menuList"></div>
+</div>
+<div class="screen" id="scrCart">
+  <div class="cart-top"><button class="back-arrow" onclick="go('scrMenu')">&larr;</button><h2>YOUR ORDER</h2></div>
+  <div id="cartBody"></div>
+</div>
+<div class="screen" id="scrDone"><div class="done-wrap" id="doneBody"></div></div>
+<div class="toast" id="toast"></div>
+</div>
+
+<!-- LIFF SDK (uncomment when deploying) -->
+<!-- <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script> -->
+
+<script>
+const M=[
+{id:1,n:'Americano',th:'อเมริกาโน่',p:45,c:'coffee',e:'\u2615',bg:'#3C2415'},
+{id:2,n:'Americano Peach',th:'อเมริกาโน่ พีช',p:55,c:'coffee',e:'\u2615',bg:'#5C3A20'},
+{id:3,n:'Americano Orange',th:'อเมริกาโน่ ส้ม',p:55,c:'coffee',e:'\u2615',bg:'#6B4423'},
+{id:4,n:'Americano Lemon',th:'อเมริกาโน่ เลม่อน',p:55,c:'coffee',e:'\u2615',bg:'#4A3A18'},
+{id:5,n:'Es-yen',th:'เอสเย็น',p:45,c:'coffee',e:'\u2615',bg:'#5C4033'},
+{id:6,n:'Coffee Latte',th:'ลาเต้',p:45,c:'coffee',e:'\u2615',bg:'#6B5040'},
+{id:7,n:'Caramel Latte Gold',th:'คาราเมล ลาเต้ โกลด์',p:50,c:'coffee',e:'\u2615',bg:'#7B5B3A'},
+{id:8,n:'Cappuccino',th:'คาปูชิโน่',p:50,c:'coffee',e:'\u2615',bg:'#4A3728'},
+{id:9,n:'Mocha',th:'มอคค่า',p:50,c:'coffee',e:'\u2615',bg:'#3A2820'},
+{id:10,n:'Cocoa Maxma Lava',th:'โกโก้แม็กม่า ลาวา',p:50,c:'cocoa',e:'\uD83E\uDD64',bg:'#4A2010'},
+{id:11,n:'Mint Cocoa Maxma',th:'มิ้นท์ โกโก้แม็กม่า',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#2A3A20'},
+{id:12,n:'Strawberry Cocoa Maxma',th:'สตรอเบอร์รี่ โกโก้แม็กม่า',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#5A2030'},
+{id:13,n:'Caramel Cocoa Maxma',th:'คาราเมล โกโก้แม็กม่า',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#5A3A20'},
+{id:14,n:'Tiramisu Cocoa Maxma',th:'ทีรามิสุ โกโก้แม็กม่า',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#4A3020'},
+{id:15,n:'Thai Tea Cocoa Maxma Lava',th:'ชาไทย โกโก้แม็กม่า ลาวา',p:60,c:'cocoa',e:'\uD83E\uDD64',bg:'#6A3A10'},
+{id:16,n:'Ovaltine Cocoa Maxma Lava',th:'โอวัลติน โกโก้แม็กม่า ลาวา',p:60,c:'cocoa',e:'\uD83E\uDD64',bg:'#5A3010'},
+{id:17,n:'OREO Cocoa Maxma Lava',th:'โอริโอ้ โกโก้แม็กม่า ลาวา',p:60,c:'cocoa',e:'\uD83E\uDD64',bg:'#2A2A2A'},
+{id:18,n:'Dark Cocoa Premium',th:'ดาร์ค โกโก้ พรีเมียม',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#2A1A10'},
+{id:19,n:'Dark Cocoa Tiramisu',th:'ดาร์ค โกโก้ ทีรามิสุ',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#3A2A1A'},
+{id:20,n:'Dark Cocoa Caramel',th:'ดาร์ค โกโก้ คาราเมล',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#4A3020'},
+{id:21,n:'Dark Cocoa Mint',th:'ดาร์ค โกโก้ มิ้นท์',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#1A3020'},
+{id:22,n:'Dark Cocoa Strawberry',th:'ดาร์ค โกโก้ สตรอเบอร์รี่',p:55,c:'cocoa',e:'\uD83E\uDD64',bg:'#4A2030'},
+{id:23,n:'Premium Matcha Latte',th:'พรีเมียม มัทฉะ ลาเต้',p:50,c:'matcha',e:'\uD83C\uDF75',bg:'#2A4020'},
+{id:24,n:'Premium Matcha Strawberry',th:'พรีเมียม มัทฉะ สตรอเบอร์รี่',p:55,c:'matcha',e:'\uD83C\uDF75',bg:'#3A3020'},
+{id:25,n:'Premium Matcha Yuzu',th:'พรีเมียม มัทฉะ ยูซุ',p:55,c:'matcha',e:'\uD83C\uDF75',bg:'#2A3A18'},
+{id:26,n:'Premium Matcha Honey Lemon',th:'พรีเมียม มัทฉะ น้ำผึ้ง มะนาว',p:55,c:'matcha',e:'\uD83C\uDF75',bg:'#3A4020'},
+{id:27,n:'Taiwan Milk Tea',th:'ชานมไต้หวัน',p:40,c:'milktea',e:'\uD83E\uDD64',bg:'#5A3A18'},
+{id:28,n:'Taiwan Milk Tea Strawberry',th:'ชานมไต้หวัน สตรอเบอร์รี่',p:45,c:'milktea',e:'\uD83E\uDD64',bg:'#5A2830'},
+{id:29,n:'Brown Sugar Taiwan Milk Tea',th:'ชานมไต้หวัน บราวชูการ์',p:45,c:'milktea',e:'\uD83E\uDD64',bg:'#4A3018'},
+{id:30,n:'Cookie Taiwan Milk Tea',th:'คุกกี้ ไต้หวัน มิลค์ที',p:50,c:'milktea',e:'\uD83E\uDD64',bg:'#3A2A1A'},
+{id:31,n:'Freshmilk',th:'นมสด',p:40,c:'milk',e:'\uD83E\uDD5B',bg:'#44403C'},
+{id:32,n:'Freshmilk Butterfly Pea',th:'นมสด อัญชัน',p:40,c:'milk',e:'\uD83E\uDD5B',bg:'#1A2050'},
+{id:33,n:'Pink Milk',th:'นมชมพู',p:40,c:'milk',e:'\uD83E\uDD5B',bg:'#5A2840'},
+{id:34,n:'Caramel Freshmilk',th:'นมสด คาราเมล',p:40,c:'milk',e:'\uD83E\uDD5B',bg:'#5A4030'},
+{id:35,n:'Ovaltine Volcano',th:'โอวัลติน ตุกตุก ภูเขาไฟ',p:45,c:'milk',e:'\uD83E\uDD5B',bg:'#4A3010'},
+{id:36,n:'Brown Sugar Freshmilk',th:'นมสด บราวชูการ์',p:45,c:'milk',e:'\uD83E\uDD5B',bg:'#4A3018'},
+{id:37,n:'Freshmilk Strawberry',th:'นมสด สตรอเบอร์รี่',p:45,c:'milk',e:'\uD83E\uDD5B',bg:'#5A2030'},
+{id:38,n:'Freshmilk Butterfly Pea Strawberry',th:'นมสด อัญชัน สตรอเบอร์รี่',p:50,c:'milk',e:'\uD83E\uDD5B',bg:'#2A2050'},
+{id:39,n:'Strawberry Sparkling Soda',th:'สตรอเบอร์รี่ สปาร์คกลิ้ง โซดา',p:40,c:'soda',e:'\uD83E\uDDCB',bg:'#5A2030'},
+{id:40,n:'Lemon Sparkling Soda',th:'เลม่อน สปาร์คกลิ้ง โซดา',p:40,c:'soda',e:'\uD83E\uDDCB',bg:'#4A4A18'},
+{id:41,n:'Yuzu Sparkling Soda',th:'ยูซุ สปาร์คกลิ้ง โซดา',p:40,c:'soda',e:'\uD83E\uDDCB',bg:'#5A4A18'},
+{id:42,n:'Peach Italian Soda',th:'พีช อิตาเลียน โซดา',p:45,c:'soda',e:'\uD83E\uDDCB',bg:'#5A3A28'},
+{id:43,n:'Blue Paradise Sparkling',th:'บลูพาราไดซ์ สปาร์คกลิ้ง',p:45,c:'soda',e:'\uD83E\uDDCB',bg:'#1A3050'},
+{id:44,n:'Strawberry Yuzu Sparkling',th:'สตรอเบอร์รี่ ยูซุ สปาร์คกลิ้ง',p:45,c:'soda',e:'\uD83E\uDDCB',bg:'#5A2838'},
+{id:45,n:'Rose Lemon Pop Strawberry',th:'กุหลาบ เลม่อน ป๊อป สตรอเบอร์รี่',p:50,c:'soda',e:'\uD83E\uDDCB',bg:'#5A2040'},
+{id:46,n:'Thai Tea',th:'ชาไทย',p:40,c:'tea',e:'\uD83C\uDF75',bg:'#6A3A10'},
+{id:47,n:'Green Tea Milk',th:'ชาเขียวนม',p:40,c:'tea',e:'\uD83C\uDF75',bg:'#2A4020'},
+{id:48,n:'Butterfly Pea Honey Lemon',th:'อัญชัน น้ำผึ้ง เลม่อน',p:45,c:'tea',e:'\uD83C\uDF75',bg:'#1A2050'},
+{id:49,n:'Lemon Tea',th:'ชามะนาว',p:45,c:'tea',e:'\uD83C\uDF75',bg:'#4A4A18'},
+{id:50,n:'Black Tea Strawberry',th:'แบล็คที สตรอเบอร์รี่',p:45,c:'tea',e:'\uD83C\uDF75',bg:'#4A2030'},
+{id:51,n:'Black Tea Peach',th:'แบล็คที พีช',p:45,c:'tea',e:'\uD83C\uDF75',bg:'#5A3A28'},
+{id:52,n:'Black Tea Yuzu',th:'แบล็คที ยูซุ',p:45,c:'tea',e:'\uD83C\uDF75',bg:'#5A4A18'},
+{id:53,n:'Jasmine Tea',th:'ชามะลิ',p:29,c:'fruittea',e:'\uD83C\uDF3C',bg:'#4A4A30'},
+{id:54,n:'Strawberry Tea',th:'ชาสตรอเบอร์รี่',p:29,c:'fruittea',e:'\uD83C\uDF53',bg:'#5A2030'},
+{id:56,n:'Peach Tea',th:'ชาพีช',p:29,c:'fruittea',e:'\uD83C\uDF51',bg:'#5A3A28'},
+{id:57,n:'Melon Tea',th:'ชาเมลอน',p:29,c:'fruittea',e:'\uD83C\uDF48',bg:'#2A4A20'},
+{id:58,n:'Yuzu Tea',th:'ชายูซุ',p:29,c:'fruittea',e:'\uD83C\uDF4A',bg:'#5A4A18'},
+];
+
+const TOPPINGS=[{id:'t1',n:'Whipped Cream',th:'วิปครีม',p:15},{id:'t2',n:'Bubble Brown Sugar',th:'บุกบราวชูก้า',p:10}];
+const CATS=[{key:'all',label:'All'},{key:'coffee',label:'Coffee'},{key:'cocoa',label:'Cocoa'},{key:'matcha',label:'Matcha'},{key:'milktea',label:'Milk Tea'},{key:'milk',label:'Fresh Milk'},{key:'soda',label:'Soda'},{key:'tea',label:'Tea'},{key:'fruittea',label:'Fruit Tea'}];
+const CAT_TITLES={coffee:'Premium Coffee',cocoa:'Cocoa & Dark Cocoa',matcha:'Premium Matcha',milktea:'Taiwan Milk Tea',milk:'Fresh Milk',soda:'Sparkling Soda',tea:'Tea',fruittea:'Fruit Tea'};
+
+let cart=[],curCat='all',selTime='15 min',selPay='qr',searchQ='';
+
+function init(){
+  document.getElementById('cats').innerHTML=CATS.map(c=>'<button class="cat-pill'+(c.key==='all'?' active':'')+'" onclick="setCat(this,\''+c.key+'\')">'+c.label+'</button>').join('');
+  renderMenu();
+  const h=new Date().getHours();
+  document.getElementById('greet').textContent=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+}
+
+function setCat(el,c){curCat=c;document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));el.classList.add('active');searchQ='';document.getElementById('searchInput').value='';renderMenu();}
+function onSearch(){searchQ=document.getElementById('searchInput').value.toLowerCase();curCat='all';document.querySelectorAll('.cat-pill').forEach((b,i)=>{b.classList.toggle('active',i===0)});renderMenu();}
+
+function renderMenu(){
+  const list=document.getElementById('menuList');
+  if(curCat==='all'&&!searchQ){
+    let html='';
+    ['coffee','cocoa','matcha','milktea','milk','soda','tea','fruittea'].forEach(c=>{
+      const ci=M.filter(m=>m.c===c);
+      if(ci.length){html+='<div class="cat-title">'+CAT_TITLES[c]+'</div>';html+=ci.map(m=>cardHTML(m)).join('');}
+    });
+    list.innerHTML=html;
+  } else {
+    const items=searchQ?M.filter(m=>m.n.toLowerCase().includes(searchQ)||m.th.includes(searchQ)):M.filter(m=>m.c===curCat);
+    list.innerHTML=items.map(m=>cardHTML(m)).join('');
+  }
+}
+
+function cardHTML(m){
+  return '<div class="menu-card" onclick="addItem('+m.id+')">'+
+    '<div class="menu-thumb" style="background:'+m.bg+'">'+m.e+'</div>'+
+    '<div class="menu-card-info"><div class="menu-card-name">'+m.n+'</div><div class="menu-card-name-th">'+m.th+'</div></div>'+
+    '<div class="menu-card-right"><div class="menu-card-price">\u0E3F'+m.p+'</div><button class="menu-add" onclick="event.stopPropagation();addItem('+m.id+')">+</button></div></div>';
+}
+
+function addItem(id){const f=cart.find(c=>c.id===id);if(f)f.q++;else cart.push({id,q:1,toppings:[]});updBadge();toast(M.find(m=>m.id===id).n+' added');}
+function updBadge(){const b=document.getElementById('badge'),t=cart.reduce((s,c)=>s+c.q,0);b.textContent=t;b.style.display=t>0?'flex':'none';}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1400);}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showCart(){go('scrCart');renderCart();}
+function getItemTotal(c){const m=M.find(x=>x.id===c.id);let tp=c.toppings?c.toppings.reduce((s,tid)=>{const t=TOPPINGS.find(x=>x.id===tid);return s+(t?t.p:0);},0):0;return(m.p+tp)*c.q;}
+
+function renderCart(){
+  const b=document.getElementById('cartBody');
+  if(!cart.length){b.innerHTML='<div class="empty-state"><p style="font-size:36px;margin-bottom:10px;opacity:0.4">\u2615</p>Your bag is empty<br>Explore our menu!</div>';return;}
+  const sub=cart.reduce((s,c)=>s+getItemTotal(c),0);
+  b.innerHTML=
+    '<div class="cart-items">'+cart.map((c,i)=>{const m=M.find(x=>x.id===c.id);const tp=c.toppings?c.toppings.map(tid=>{const t=TOPPINGS.find(x=>x.id===tid);return t?t.th:''}).filter(Boolean).join(', '):'';return'<div class="ci"><div class="ci-em" style="background:'+m.bg+'">'+m.e+'</div><div class="ci-info"><div class="ci-name">'+m.n+'</div><div class="ci-sub">'+m.th+(tp?' + '+tp:'')+'</div><div class="ci-qty"><button onclick="chg('+i+',-1)">\u2212</button><span>'+c.q+'</span><button onclick="chg('+i+',1)">+</button></div></div><div class="ci-price">\u0E3F'+getItemTotal(c)+'</div></div>';}).join('')+'</div>'+
+    '<div class="divider"></div><div class="sec-head">Toppings</div><div class="topping-section">'+
+    TOPPINGS.map(t=>'<div class="topping-card'+(cart.some(c=>c.toppings&&c.toppings.includes(t.id))?' selected':'')+'" onclick="toggleTopping(\''+t.id+'\')"><div class="topping-check">'+(cart.some(c=>c.toppings&&c.toppings.includes(t.id))?'\u2713':'')+'</div><div class="topping-name">'+t.th+' ('+t.n+')</div><div class="topping-price">+\u0E3F'+t.p+'</div></div>').join('')+
+    '<div style="font-size:9px;color:#78716C;padding:4px 0">Toppings จะถูกเพิ่มให้ทุกรายการ</div></div>'+
+    '<div class="divider"></div><div class="sec-head">Pick up time</div><div class="time-grid">'+['15 min','30 min','45 min','1 hour'].map(t=>'<div class="time-chip'+(selTime===t?' active':'')+'" onclick="pickTime(this,\''+t+'\')">'+t+'</div>').join('')+'</div>'+
+    '<div class="divider"></div><div class="sec-head">Payment</div><div class="pay-list">'+
+    '<div class="pay-card'+(selPay==='qr'?' active':'')+'" onclick="pickPay(\'qr\')"><div class="pay-dot"></div><div class="pay-badge" style="background:#1A3365;color:#fff">QR</div><div class="pay-info"><div class="pay-name">PromptPay</div><div class="pay-desc">Scan QR to pay</div></div></div>'+
+    '<div class="pay-card'+(selPay==='card'?' active':'')+'" onclick="pickPay(\'card\')"><div class="pay-dot"></div><div class="pay-badge" style="background:#7F77DD;color:#fff">CARD</div><div class="pay-info"><div class="pay-name">Credit / Debit</div><div class="pay-desc">Visa, Mastercard, JCB</div></div></div>'+
+    '<div class="pay-card'+(selPay==='cash'?' active':'')+'" onclick="pickPay(\'cash\')"><div class="pay-dot"></div><div class="pay-badge" style="background:#8B7355;color:#0C0A09">\u0E3F</div><div class="pay-info"><div class="pay-name">Pay at counter</div><div class="pay-desc">Cash or card at pickup</div></div></div></div>'+
+    '<div class="summary-box"><div class="s-row"><span>Subtotal</span><span>\u0E3F'+sub+'</span></div><div class="s-row"><span>Service fee</span><span>\u0E3F0</span></div><div class="s-row total"><span>Total</span><span>\u0E3F'+sub+'</span></div></div>'+
+    '<button class="order-btn" onclick="order()">Confirm order \u2022 \u0E3F'+sub+'</button>';
+}
+
+function chg(i,d){cart[i].q+=d;if(cart[i].q<=0)cart.splice(i,1);updBadge();renderCart();}
+function pickTime(el,t){selTime=t;document.querySelectorAll('.time-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+function pickPay(p){selPay=p;renderCart();}
+function toggleTopping(tid){cart.forEach(c=>{if(!c.toppings)c.toppings=[];const idx=c.toppings.indexOf(tid);if(idx>=0)c.toppings.splice(idx,1);else c.toppings.push(tid);});renderCart();}
+
+function order(){
+  const num='MG-'+Math.floor(1000+Math.random()*9000);
+  const pay={qr:'PromptPay QR',card:'Credit/Debit Card',cash:'Pay at counter'}[selPay];
+  document.getElementById('doneBody').innerHTML=
+    '<div class="done-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>'+
+    '<div class="done-title">Order confirmed</div>'+
+    '<div class="done-sub">Pick up in <strong style="color:var(--cream)">'+selTime+'</strong><br>Payment: '+pay+'</div>'+
+    '<div class="done-num">'+num+'</div>'+
+    '<div class="done-line"></div>'+
+    '<div style="font-size:10px;color:var(--muted);margin-bottom:16px">We\u2019ll notify you when it\u2019s ready</div>'+
+    '<button class="again-btn" onclick="reset()">New order</button>';
+  go('scrDone');
+}
+function reset(){cart=[];selTime='15 min';selPay='qr';updBadge();go('scrMenu');}
+init();
+</script>
+</body>
+</html>
